@@ -1,0 +1,69 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<style>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+        opacity: 0
+    }
+    *{
+        margin: 0;padding:0;
+        list-style: none;
+    }
+    .box{
+        width: 200px;padding: 10px;height:auto;
+        border:1px solid #f0f0f0;
+        text-align: center;
+    }
+    .box-name{
+        width: 100%;height:100%;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .box-name>h3{
+        cursor: pointer;
+    }
+    .box-name>li{
+        width: 100%;height:40px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+</style>
+<body>
+    <div class="box">
+        <!--<ul class="box-name" v-for="item in data">
+            <h3 @click="shows(item)">{{item.parent}}</h3>
+            <transition name="fade" v-for="items in item.son">
+                <li v-if="item.show">{{items}}</li>
+            </transition>
+        </ul>-->
+        <custom-drop v-for="item in data" v-bind:drop="item"></custom-drop>
+    </div>
+    <script>
+        Vue.component("custom-drop",{
+            props:["drop"],
+            template:"<ul class='box-name'><h3 @click='shows(drop)'>{{drop.parent}}</h3><transition name='fade' v-for='items in drop.son'><li v-if='drop.show'>{{items}}</li></transition></ul>",
+            methods:{
+                shows(item){
+                    item.show=!item.show;
+                }
+            }
+        });
+        new Vue({
+            el:".box",
+            data:{
+                data:[{parent:"一",son:[1,2,3,4,5,6],show:false},
+                    {parent:"二",son:[1,2,3,4,5,6],show:false}
+                ],
+            },
+        })
+    </script>
+</body>
+</html>
